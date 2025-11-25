@@ -1,0 +1,5 @@
+<|channel|>analysis<|message|>Need to summarize the text in 3 key points. The text is a prompt: "Write a paragraph of 50 words describing a futuristic market on Mars. Focus on smells and sounds 3." So summarizing that instruction. Provide 3 bullet points.<|end|><|start|>assistant<|channel|>final<|message|>1. **Objetivo del ejercicio** – Redactar un párrafo de exactamente 50 palabras que describa un mercado futurista situado en Marte, con énfasis especial en los olores y sonidos presentes.
+
+2. **Enfoque sensorial** – El contenido debe capturar la atmósfera olfativa (por ejemplo, el aroma metálico del polvo marciano o el perfume de cultivos hidropónicos) y auditiva (ruido de maquinaria, voces interplanetarias, ecos en cavernas rocosas).
+
+3. **Formato y precisión** – Mantener la longitud exacta (50 palabras), usar un tono descriptivo y evocador, y asegurar que los elementos sensoriales sean claros y coherentes dentro del contexto marciano futurista.

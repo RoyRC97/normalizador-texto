@@ -1,41 +1,47 @@
-import fs from "fs";
-import OpenAI from "openai";
-
-// 1️⃣ Configuramos la conexión con LM Studio
+const fs = require('fs');
+// Importamos el nuevo SDK oficial de OpenAI
+const OpenAI = require('openai');
+// 1. Configuramos el cliente de OpenAI
 const openai = new OpenAI({
-  baseURL: "http://192.168.1.80:1234/v1", // dirección del servidor local LM Studio
-  apiKey: "not-needed-for-local", // no se usa en modelos locales
+// ¡LA CLAVE! Apuntamos a nuestro servidor local de LM Studio
+baseURL: 'http://localhost:1234/v1',
+// Usamos una clave API ficticia. No importa lo que escribas,
+// pero el SDK requiere que el campo exista.
+apiKey: 'not-needed-for-local'
 });
-
-// 2️⃣ Leemos el prompt del archivo de entrada
-const promptUsuario = fs.readFileSync("entrada.txt", "utf-8");
-console.log("Enviando prompt:", JSON.stringify(promptUsuario));
-
-// 3️⃣ Función principal
+// Función principal asíncrona
 async function chatearConModeloLocal() {
-  try {
-    // Enviamos el texto al modelo
-    const completion = await openai.completions.create({
-      model: "openai/gpt-oss-20b", // modelo cargado en LM Studio
-      prompt: `Eres un analista de negocios experto. Resume el siguiente texto en 3 puntos clave:\n\n${promptUsuario}`,
-      temperature: 0.3,
-      max_tokens: 250,
-    });
+try {
+// 2. Leemos el prompt desde nuestro archivo de entrada
+const promptUsuario = fs.readFileSync('entrada.txt', 'utf-8');
+console.log(` Enviando prompt: "${promptUsuario}"`);
+// 3. ¡LA NUEVA FORMA! Usamos el método 'chat.completions.create'
+const chatCompletion = await openai.chat.completions.create({
+// El formato 'messages' es el estándar de OpenAI
+messages: [
+{ role: 'system',
+content: 'Eres un asistente útil y creativo.' },
 
-    // Mostramos la respuesta
-    const respuesta = completion.choices[0].text;
-    console.log("\n💬 Respuesta del modelo:\n");
-    console.log(respuesta);
-
-    // Guardamos la respuesta en un archivo
-    fs.writeFileSync("salida.txt", respuesta);
-    console.log('\n✅ Respuesta guardada en "salida.txt"');
-  } catch (error) {
-    console.error("\n⚠️ Ha ocurrido un error:");
-    console.error(error.message);
-  }
+{ role: 'user',
+content: promptUsuario } ],
+model: 'mistral-7b-instruct', // El modelo cargado en LM Studio
+temperature: 0.7, // Controla la creatividad
+});
+// 4. Extraemos y mostramos la respuesta
+const respuesta = chatCompletion.choices[0].message.content;
+console.log(' Respuesta del Modelo:');
+console.log(respuesta);
+// 5. Guardamos la respuesta en el archivo de salida
+fs.writeFileSync('salida.txt', respuesta);
+console.log('\nRespuesta guardada en "salida.txt"');
+} catch (error) {
+console.error(' Ha ocurrido un error:');
+if (error.code === 'ECONNREFUSED') {
+console.error('Error: No se pudo conectar. ¿Iniciaste el servidor en LM Studio?');
+} else {
+console.error(error.message);
 }
-
-
-// 4️⃣ Ejecutamos
+}
+}
+// Ejecutamos la función
 chatearConModeloLocal();

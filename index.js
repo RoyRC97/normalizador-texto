@@ -20,7 +20,7 @@ const chatCompletion = await openai.chat.completions.create({
 // El formato 'messages' es el estándar de OpenAI
 messages: [
 { role: 'system',
-content: 'Eres un asistente útil y creativo.' },
+content: 'Eres un capitán pirata rudo y hablas como tal. Siempre te quejas del clima' },
 
 { role: 'user',
 content: promptUsuario } ],
